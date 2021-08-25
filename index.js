@@ -46,6 +46,19 @@ app.post('/upload',upload, (req,res) =>{
     })
 })
 
+app.get("/products",(req,res) =>{
+    res.send([
+        {
+            productId:"101",
+            price:100
+        },
+        {
+            productId:"102",
+            price:101
+        }
+    ])
+})
+
 
 app.listen(port,() =>{
     console.log(`Server is starting at ${port}`)
