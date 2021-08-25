@@ -4,6 +4,14 @@ const AWS = require('aws-sdk')
 const { v4: uuidv4 } = require('uuid');
 const path = require('path')
 
+const key = require("./keys")
+
+const AWS_ID = key.AWS_ID;
+const AWS_SECRET = key.AWS_SECRET;
+const AWS_BUCKET_NAME = key.AWS_BUCKET_NAME;
+
+console.log(AWS_ID)
+
 
 
 // const uuid = uuidv4()
@@ -15,8 +23,8 @@ require('dotenv').config({path: path.join(__dirname, '.env')});
 const  port = 3000
 
 const s3 = new AWS.S3({
-    accessKeyId:process.env.AWS_ID,
-    secretAccessKey:process.env.AWS_SECRET
+    accessKeyId:AWS_ID,
+    secretAccessKey:AWS_SECRET
 })
 
 const storage = multer.memoryStorage({
@@ -33,7 +41,7 @@ app.post('/upload',upload, (req,res) =>{
     const fileType=myFile[myFile.length-1]
 
     const params = {
-        Bucket:process.env.AWS_BUCKET_NAME,
+        Bucket:AWS_BUCKET_NAME,
         Key:`${uuidv4()}.${fileType}`,
         Body:req.file.buffer
     }
