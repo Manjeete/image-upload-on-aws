@@ -59,6 +59,10 @@ app.get("/products",(req,res) =>{
     ])
 })
 
+app.get("/",(req,res) =>{
+    res.send("<h1>Test app deploy test</h1>")
+})
+
 
 app.listen(port,() =>{
     console.log(`Server is starting at ${port}`)
