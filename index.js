@@ -3,21 +3,31 @@ const multer = require('multer');
 const AWS = require('aws-sdk')
 const { v4: uuidv4 } = require('uuid');
 const path = require('path')
+const mongoose = require('mongoose')
+const Profile = require('./models/profileModel');
+const bodyParser = require('body-parser')
 
 const key = require("./keys")
 
 const AWS_ID = key.AWS_ID;
 const AWS_SECRET = key.AWS_SECRET;
 const AWS_BUCKET_NAME = key.AWS_BUCKET_NAME;
+const DATABASE_CLOUD = key.DATABASE_CLOUD
 
-console.log(AWS_ID)
 
+
+mongoose.connect(DATABASE_CLOUD,{useNewUrlParser:true,useUnifiedTopology: true })
+.then(() => console.log('DB Connected...'))
 
 
 // const uuid = uuidv4()
 
 const app = express();
 require('dotenv').config({path: path.join(__dirname, '.env')});
+
+app.use(bodyParser.json())
+// app.use(cookieParser())
+// app.use(cors());
 
 
 const  port = 3000
@@ -69,6 +79,18 @@ app.get("/products",(req,res) =>{
 
 app.get("/",(req,res) =>{
     res.send("<h1>Test app deploy test</h1>")
+})
+
+app.post('/profile',async(req,res) =>{
+    let {name,email} = req.body;
+    const newProfile = await Profile.create({name:name,email:email})
+
+    return res.status(201).json({
+        status:'success',
+        data:{
+            newProfile
+        }
+    })
 })
 
 
